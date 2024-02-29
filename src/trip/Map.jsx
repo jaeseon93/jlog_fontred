@@ -4,6 +4,7 @@ import {GoogleMap, Marker, useLoadScript} from "@react-google-maps/api";
 import * as React from "react";
 import {Fragment} from "react";
 import Grid from "@mui/material/Grid";
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 
 const containerStyle = {
     width: '800px',
@@ -47,31 +48,35 @@ export default function Map () {
         mapRef.current = map;
     }, []);
 
-    const autoComplete = new window.google.maps.places.Autocomplete(
-        inputRef.current,
-    )
+    if(isLoaded) {
+        const autoComplete = new window.google.maps.places.Autocomplete(
+            inputRef.current,
+        )
 
-    autoComplete.addListener('place_changed', () => {
-        let map = mapRef.current;
-        const place = autoComplete.getPlace();
-        if (!place.geometry || !place.geometry.location) {
-            alert("현재 이용할 수 없는 지역입니다. 다시 검색해주세요.");
-        }
-        if (place.geometry.viewport || place.geometry.location) {
-            mapRef.current.panTo({ lat: place.geometry.location.lat(), lng:place.geometry.location.lng() });
-            new window.google.maps.Marker({position: place.geometry.location, map});
-        }
-    })
+        autoComplete.addListener('place_changed', () => {
+            let map = mapRef.current;
+            const place = autoComplete.getPlace();
+            if (!place.geometry || !place.geometry.location) {
+                alert("현재 이용할 수 없는 지역입니다. 다시 검색해주세요.");
+            }
+            if (place.geometry.viewport || place.geometry.location) {
+                mapRef.current.panTo({ lat: place.geometry.location.lat(), lng:place.geometry.location.lng() });
+                new window.google.maps.Marker({position: place.geometry.location, map});
+            }
+        })
+    }
 
     return (
         isLoaded ? (
-        <Grid>
-         <label>Location</label>
-         <input
-             placeholder='type your location'
-             ref={inputRef}
-             style={inputStyle}
-            />
+        <Grid container sx={{ justifyContent: "center" }}>
+            <Grid item>
+                <SearchRoundedIcon/>
+                 <input
+                     placeholder='나라 또는 장소를 검색해주세요'
+                     ref={inputRef}
+                     style={inputStyle}
+                    />
+            </Grid>
             <GoogleMap
                 id="map"
                 mapContainerStyle={containerStyle}

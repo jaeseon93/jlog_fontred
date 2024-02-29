@@ -6,8 +6,8 @@ import {Formik} from "formik";
 import {Button, MenuItem, Select, TextField} from "@mui/material";
 import {countryInfo} from "./api/Trip";
 import * as React from "react";
-import {GoogleMap, Marker, useJsApiLoader} from "@react-google-maps/api";
 import Map from "./Map";
+import Divider from "@mui/material/Divider";
 
 export default function WishTrip() {
     const initialParams = {
@@ -24,10 +24,13 @@ export default function WishTrip() {
     return (
         <>
         <Map />
+        <Grid sx={{ mt:3, mb:3}}>
+            <Divider>국가정보</Divider>
+        </Grid>
         <Formik initialValues={initialParams} onSubmit={getCountryInfo}>
             {({ values, errors, touched, handleChange, setFieldValue, handleSubmit, handleReset }) => (
                 <form noValidate onSubmit={handleSubmit} onReset={handleReset}>
-                    <Grid container spacing={1}>
+                    <Grid container spacing={1} sx={{mt:1}}>
                         <Grid item xs={2}>
                             <Select
                                 fullWidth

@@ -16,7 +16,7 @@ export async function countryInfo(params) {
         const items = res.data.response.body.items.item;
         console.log('items', items)
         if(!isEmpty(items)) {
-            result = items.basic;
+            result = items;
         } else {
             result = '없음';
         }

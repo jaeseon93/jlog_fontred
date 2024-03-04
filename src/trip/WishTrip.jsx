@@ -15,10 +15,14 @@ export default function WishTrip() {
         countryName: "",
         countryEnName: "",
     }
-    const [country, setCountry] = useState('');
-
+    const [country, setCountry] = useState({countryName:'' , continent: '', basic:'', imgUrl:''});
     const getCountryInfo = async (params) => {
         setCountry(await countryInfo(params));
+    }
+
+    const handleCountryInfoReset = () => {
+        setCountry({countryName:'' , continent: '', basic:'', imgUrl:'' });
+        console.log('country', country);
     }
 
     return (
@@ -27,7 +31,10 @@ export default function WishTrip() {
         <Grid sx={{ mt:3, mb:3}}>
             <Divider>국가정보</Divider>
         </Grid>
-        <Formik initialValues={initialParams} onSubmit={getCountryInfo}>
+        <Formik initialValues={initialParams}
+                onSubmit={getCountryInfo}
+                onReset={handleCountryInfoReset}
+        >
             {({ values, errors, touched, handleChange, setFieldValue, handleSubmit, handleReset }) => (
                 <form noValidate onSubmit={handleSubmit} onReset={handleReset}>
                     <Grid container spacing={1} sx={{mt:1}}>
@@ -54,14 +61,23 @@ export default function WishTrip() {
                             />
                         </Grid>
                         <Grid item xs={2}>
-                            <Button type={"submit"} variant="contained">검색</Button>
+                            <Button type={"submit"} variant="contained" sx={{mr:1}}>검색</Button>
+                            <Button type={"reset"} variant="outlined">초기화</Button>
                         </Grid>
                     </Grid>
                 </form>
             )}
         </Formik>
-        <Grid>
-            <div dangerouslySetInnerHTML={{__html: country}}/>
+        <Grid container spacing={1}>
+            <Grid item xs={2}>
+                <img src={country.imgUrl ? country.imgUrl : '/logo.svg'}
+                     alt={'국가이미지'}
+                />
+                <div dangerouslySetInnerHTML={{__html: country.countryName? country.countryName + '[' + country.continent + ']' : ''}}/>
+            </Grid>
+            <Grid item xs={10}>
+                <div dangerouslySetInnerHTML={{__html: country.basic}}/>
+            </Grid>
         </Grid>
         </>
     )

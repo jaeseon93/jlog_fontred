@@ -40,7 +40,7 @@ export default function Map () {
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
         libraries
     });
-    console.log('isLoaded', isLoaded);
+
     const mapRef = React.useRef();
     const inputRef = React.useRef();
 
@@ -58,6 +58,7 @@ export default function Map () {
             const place = autoComplete.getPlace();
             if (!place.geometry || !place.geometry.location) {
                 alert("현재 이용할 수 없는 지역입니다. 다시 검색해주세요.");
+                return false;
             }
             if (place.geometry.viewport || place.geometry.location) {
                 mapRef.current.panTo({ lat: place.geometry.location.lat(), lng:place.geometry.location.lng() });
@@ -77,16 +78,18 @@ export default function Map () {
                      style={inputStyle}
                     />
             </Grid>
-            <GoogleMap
-                id="map"
-                mapContainerStyle={containerStyle}
-                zoom={12}
-                center={center}
-                options={options}
-                onLoad={onMapLoad}
-            >
-                <Marker position={center}></Marker>
-            </GoogleMap>
+            <div>
+                <GoogleMap
+                    id="map"
+                    mapContainerStyle={containerStyle}
+                    zoom={12}
+                    center={center}
+                    options={options}
+                    onLoad={onMapLoad}
+                >
+                    <Marker position={center}></Marker>
+                </GoogleMap>
+            </div>
         </Grid>
         ) : <></>
     )

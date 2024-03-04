@@ -25,11 +25,12 @@ function Header() {
     const handleClick = (name) => {
         console.log('name', name);
         switch (name) {
-            case 'travel' :
-                navigate("/trip");
-                break;
             case 'home' :
                 navigate("/"); break;
+            case 'travel' :
+                navigate("/trip"); break;
+            case 'plant' :
+                navigate("/plant"); break;
             default :
                 navigate("/"); break;
         }

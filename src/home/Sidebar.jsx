@@ -7,6 +7,7 @@ import Link from '@mui/material/Link';
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {DateCalendar, LocalizationProvider} from "@mui/x-date-pickers";
 import dayjs from "dayjs";
+import 'dayjs/locale/ko';
 
 function Sidebar(props) {
     const { archives, title } = props;

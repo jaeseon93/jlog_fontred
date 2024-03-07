@@ -2,7 +2,6 @@ import axios from "axios";
 import {isEmpty} from "../../utils/utils";
 
 export async function countryInfo(params) {
-    console.log('params', params)
     let result = "";
     await axios.get('https://apis.data.go.kr/1262000/CountryBasicService/getCountryBasicList', {
         params: {
@@ -14,7 +13,6 @@ export async function countryInfo(params) {
         }
     }).then(async (res) => {
         const items = res.data.response.body.items.item;
-        console.log('items', items)
         if(!isEmpty(items)) {
             result = items;
         } else {

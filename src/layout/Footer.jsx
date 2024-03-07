@@ -31,7 +31,7 @@ function Footer() {
                     color="text.secondary"
                     component="p"
                 >
-                    자유롭게 작성하는 내공간
+                    자유롭게 작성하는 공간
                 </Typography>
                 <Copyright />
             </Container>

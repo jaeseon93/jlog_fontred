@@ -10,7 +10,7 @@ import Layout from "../layout/Layout";
 const mainFeaturedPost = {
     title: 'Welcome to JLog',
     description:
-        "식물을 좋아하는 개발자의 블로그",
+        "개발자",
     image: 'https://source.unsplash.com/random?nature',
     imageText: 'main image description',
     linkText: 'Github',
@@ -57,21 +57,21 @@ const featuredPosts = [
 export default function Home() {
     return (
         <Layout>
-                    <Dashboard post={mainFeaturedPost} />
-                    <Grid container spacing={4}>
-                        {featuredPosts.map((post) => (
-                            <FeaturedPost key={post.title} post={post} />
-                        ))}
-                    </Grid>
-                    <Grid container spacing={5} sx={{ mt: 3 }}>
-                    <MainDashboard title="미정" />
-                    <Sidebar
-                        title={sidebar.title}
-                        description={sidebar.description}
-                        archives={sidebar.archives}
-                        social={sidebar.social}
-                    />
-                    </Grid>
+            <Dashboard post={mainFeaturedPost} />
+            <Grid container spacing={4}>
+                {featuredPosts.map((post) => (
+                    <FeaturedPost key={post.title} post={post} />
+                ))}
+            </Grid>
+            <Grid container spacing={5} sx={{ mt: 3 }}>
+            <MainDashboard title="미정" />
+            <Sidebar
+                title={sidebar.title}
+                description={sidebar.description}
+                archives={sidebar.archives}
+                social={sidebar.social}
+            />
+            </Grid>
         </Layout>
     );
 }

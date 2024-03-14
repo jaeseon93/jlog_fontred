@@ -26,13 +26,13 @@ function Header() {
         console.log('name', name);
         switch (name) {
             case 'home' :
-                navigate("/"); break;
+                navigate("/home"); break;
             case 'travel' :
                 navigate("/trip"); break;
             case 'plant' :
                 navigate("/plant"); break;
             default :
-                navigate("/"); break;
+                navigate("/home"); break;
         }
     }
 
@@ -63,8 +63,8 @@ function Header() {
                     >
                         {menus.map((section) => (
                             <Link
-                                color="inherit"
                                 noWrap
+                                underline={'hover'}
                                 key={section.title}
                                 variant="body2"
                                 onClick={() => handleClick(section.name)}

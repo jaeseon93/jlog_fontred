@@ -2,7 +2,7 @@ import './App.css';
 import {Route, Routes, BrowserRouter} from "react-router-dom"
 import Home from "./home/Home";
 import Trip from "./trip/Trip";
-import Plant from "./plant/Plant";
+import Page from "./plant/Page";
 
 
 function App() {
@@ -12,7 +12,7 @@ function App() {
           <Routes>
             <Route path={"/home"} element={<Home />} />
             <Route path={"/trip"} element={<Trip />} />
-            <Route path={"/plant"} element={<Plant />} />
+            <Route path={"/plant"} element={<Page />} />
           </Routes>
         </div>
       </BrowserRouter>

@@ -1,37 +1,52 @@
-import axios from "axios";
-import XMLParser from "react-xml-parser/xmlParser";
+import axios, {options} from "axios";
+import convert from 'xml-js';
+import {isEmpty} from "../../utils/utils";
 
+const baseUrl = '/service/garden';
 
-export default async function getGardenList(params) {
-    console.log('params', params)
-    return await axios.get('/service/garden/gardenList', {
+/**
+ * 식물 리스트 가져오기
+ * @param params
+ * @returns {Promise<*[]|undefined>}
+ */
+export async function getGardenList(params) {
+    return await axios.get(baseUrl + '/gardenList', {
         params: {
             apiKey: process.env.REACT_APP_NONGSARO_API_KEY,
             pageNo: params.pageNo,
             numOfRows: params.numOfRows
         }
-    }).then(async (response) => {
-        let gardenList = [];
-        const resultList = [];
+    }).then(async (r) => {
+        let resultList = [];
 
-        const xmltoJson = new XMLParser().parseFromString(response.data);
-        const jsonData = xmltoJson.children[1].children[0].children;
+        const xmltoJson = convert.xml2json(r.data, {compact: true, spaces: 4});
+        const result = JSON.parse(xmltoJson);
 
-        if (jsonData.length !== 0) {
-            gardenList = await jsonData.filter(row => row.name === 'item');
-            gardenList && gardenList?.map((element) => {
-                var resultMap = {};
-                element.children.filter(row=>row.name === "rtnThumbFileUrl").map((url, key) => {
-                    return resultMap["url"] = url.value.split('|',1);
-                });
-                element.children.filter(row=>row.name === "cntntsNo").map((no, key) => {
-                    return resultMap["no"] = no.value.split(' ',1);
-                });
-                resultList.push(resultMap);
-                return resultList;
-            });
-            return resultList;
+        if(!isEmpty(result)) {
+            resultList = result.response.body.items.item
         }
+        return resultList;
     })
 }
 
+export async function getGardenDtl(plantNo) {
+    console.log('api',plantNo);
+    if(!!plantNo) {
+        return await axios.get(baseUrl + '/gardenDtl', {
+            params: {
+                apiKey: process.env.REACT_APP_NONGSARO_API_KEY,
+                cntntsNo : plantNo
+            }
+        }).then(async (r) => {
+
+
+            var result1 = convert.xml2json(r.data, {compact: true, spaces: 4});
+            console.log('xmlToJson2', result1);
+            console.log('xmlToJson2', result1.response);
+           // const xmltoJson = new XMLParser().parseFromString(response.data);
+           //  console.log('xmltoJson:', xmltoJson);
+           //  const jsonData = xmltoJson.children[1].children[0].children;
+           //  console.log('jsonData:', jsonData);
+        });
+    }
+}

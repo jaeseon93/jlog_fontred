@@ -3,7 +3,7 @@
 import Layout from "../layout/Layout";
 import * as React from "react";
 import Grid from "@mui/material/Grid";
-import getGardenList from "./api/PlantApi";
+import {getGardenList} from "./api/PlantApi";
 import {useQuery} from "@tanstack/react-query";
 import {Button, ImageList, ImageListItem, Pagination} from "@mui/material";
 import {useState} from "react";
@@ -12,7 +12,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import {isEmpty} from "../utils/utils";
 import Typography from "@mui/material/Typography";
-import PlantDtail from "./PlantDtail";
+import PlantDetail from "./PlantDetail";
 
 export default function Plant() {
 
@@ -44,7 +44,6 @@ export default function Plant() {
     const handleImageClickBtn = (e) => {
         const plantNo = e.target.alt;
         if(!isEmpty(plantNo)) {
-            console.log("들어옴")
             setPlantClick(true);
             setPlantNo(plantNo);
         }
@@ -60,6 +59,7 @@ export default function Plant() {
                              {
                                  gardenList?.map((element, index) => {
                                  let input;
+                                 const sliceIndex = element.rtnThumbFileUrl._cdata.indexOf('|');
                                  input = (
                                      <ImageListItem  key={index}>
                                          <Button
@@ -67,8 +67,8 @@ export default function Plant() {
                                              onClick={handleImageClickBtn}
                                          >
                                          <img
-                                             src={element.url[0]}
-                                             alt={element.no[0]}
+                                             src={element.rtnThumbFileUrl._cdata?.substring(0, sliceIndex)}
+                                             alt={element.cntntsNo._cdata}
                                              style={{width:"100%", height:"auto"}}
                                              loading="lazy"
                                          />
@@ -84,7 +84,7 @@ export default function Plant() {
                         <Grid sx={{ backgroundColor:"rgba(255,255,255,0.75)", width: 560, height: 450 }}>
                             {
                                 plantClick ? (
-                                    <PlantDtail plantNo={plantNo} />
+                                    <PlantDetail plantNo={plantNo} />
                                 ) : (
                                     <Typography> 왼쪽 식물을 클릭 해 주세요.</Typography>
                                 )

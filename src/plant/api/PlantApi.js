@@ -1,6 +1,5 @@
-import axios, {options} from "axios";
-import convert from 'xml-js';
-import {isEmpty} from "../../utils/utils";
+import axios from "axios";
+import {isEmpty, xmlToJson} from "../../utils/utils";
 
 const baseUrl = '/service/garden';
 
@@ -18,19 +17,22 @@ export async function getGardenList(params) {
         }
     }).then(async (r) => {
         let resultList = [];
-
-        const xmltoJson = convert.xml2json(r.data, {compact: true, spaces: 4});
-        const result = JSON.parse(xmltoJson);
+        const result = xmlToJson(r);
 
         if(!isEmpty(result)) {
-            resultList = result.response.body.items.item
+            resultList = result.body.items.item
         }
         return resultList;
     })
 }
 
+/**
+ * 식물 상세 정보 가져오기
+ * @param plantNo
+ * @returns {Promise<any|undefined>}
+ */
 export async function getGardenDtl(plantNo) {
-    console.log('api',plantNo);
+
     if(!!plantNo) {
         return await axios.get(baseUrl + '/gardenDtl', {
             params: {
@@ -38,15 +40,31 @@ export async function getGardenDtl(plantNo) {
                 cntntsNo : plantNo
             }
         }).then(async (r) => {
+            const result = xmlToJson(r);
+            if(!isEmpty(result)) {
+                return result.body.item;
+            }
+        });
+    }
+}
 
-
-            var result1 = convert.xml2json(r.data, {compact: true, spaces: 4});
-            console.log('xmlToJson2', result1);
-            console.log('xmlToJson2', result1.response);
-           // const xmltoJson = new XMLParser().parseFromString(response.data);
-           //  console.log('xmltoJson:', xmltoJson);
-           //  const jsonData = xmltoJson.children[1].children[0].children;
-           //  console.log('jsonData:', jsonData);
+/**
+ * 식물 파일 목록 가져오기
+ * @param plantNo
+ * @returns {Promise<void>}
+ */
+export async function plantFileList(plantNo){
+    if(!!plantNo) {
+        return await axios.get(baseUrl + '/gardenFileList', {
+            params: {
+                apiKey: process.env.REACT_APP_NONGSARO_API_KEY,
+                cntntsNo : plantNo
+            }
+        }).then(async (response) => {
+            const result = xmlToJson(response);
+            if(!isEmpty(result)) {
+                return result.body.items.item;
+            }
         });
     }
 }
